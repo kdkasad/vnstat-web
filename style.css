@@ -6,14 +6,17 @@ body {
 
 header {
 	width: 100%;
-	text-align: right;
 	height: 4em;
 	padding: 1em;
 	box-shadow: 0 0px 8px 0px darkgray;
 	box-sizing: border-box;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-end;
+	align-items: center;
 }
 
-header label {
+header > form > label {
 	margin-left: 1em;
 }
 
