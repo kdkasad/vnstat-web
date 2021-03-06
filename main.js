@@ -27,6 +27,13 @@ function createGraphContentDaily(ifname, traffic) {
 			display: true,
 			text: ifname,
 		},
+		tooltips: {
+			callbacks: {
+				label: (tti, data) => {
+					return data.datasets[tti.datasetIndex].label + ": " + data.datasets[tti.datasetIndex].data[tti.index] + ' GiB';
+				}
+			}
+		},
 		scales: {
 			xAxes: [{
 				stacked: stackGraphs,
@@ -50,13 +57,13 @@ function createGraphContentDaily(ifname, traffic) {
 		labels: [],
 		datasets: [
 			{
-				label: 'rx (GiB)',
+				label: 'Rx',
 				data: [],
 				backgroundColor: '#5DADE2',
 				borderColor: '#3498DB',
 			},
 			{
-				label: 'tx (GiB)',
+				label: 'Tx',
 				data: [],
 				backgroundColor: '#58D68D',
 				borderColor: '#2ECC71',
@@ -65,7 +72,7 @@ function createGraphContentDaily(ifname, traffic) {
 	};
 	if (!stackGraphs) {
 		data.datasets.push({
-				label: 'total (GiB)',
+				label: 'Total',
 				data: [],
 				backgroundColor: '#F7DC6F',
 				borderColor: '#F4D03F',
@@ -109,6 +116,13 @@ function createGraphContentHourly(ifname, traffic) {
 			display: true,
 			text: ifname,
 		},
+		tooltips: {
+			callbacks: {
+				label: (tti, data) => {
+					return data.datasets[tti.datasetIndex].label + ": " + data.datasets[tti.datasetIndex].data[tti.index] + ' GiB';
+				}
+			}
+		},
 		scales: {
 			xAxes: [{
 				stacked: stackGraphs,
@@ -132,13 +146,13 @@ function createGraphContentHourly(ifname, traffic) {
 		labels: [],
 		datasets: [
 			{
-				label: 'rx (GiB)',
+				label: 'Rx',
 				data: [],
 				backgroundColor: '#5DADE2',
 				borderColor: '#3498DB',
 			},
 			{
-				label: 'tx (GiB)',
+				label: 'Tx',
 				data: [],
 				backgroundColor: '#58D68D',
 				borderColor: '#2ECC71',
@@ -147,7 +161,7 @@ function createGraphContentHourly(ifname, traffic) {
 	};
 	if (!stackGraphs) {
 		data.datasets.push({
-				label: 'total (GiB)',
+				label: 'Total',
 				data: [],
 				backgroundColor: '#F7DC6F',
 				borderColor: '#F4D03F',
