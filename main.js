@@ -12,7 +12,7 @@ function roundTo(number, precision) {
  */
 function createGraphElements(ifname) {
 	document.getElementById('graph-grid').insertAdjacentHTML( 'beforeend',
-		`<div class="canvas-container"><h4>${ifname}</h4><canvas id="graph-${ifname}">Your browser does not support canvas elements.</canvas></div>`);
+		`<div class="canvas-container"><canvas id="graph-${ifname}">Your browser does not support canvas elements.</canvas></div>`);
 }
 
 /*
@@ -23,6 +23,10 @@ function createGraphElements(ifname) {
  */
 function createGraphContentDaily(ifname, traffic) {
 	const options = {
+		title: {
+			display: true,
+			text: ifname,
+		},
 		scales: {
 			xAxes: [{
 				stacked: stackGraphs,
@@ -101,6 +105,10 @@ function createGraphContentDaily(ifname, traffic) {
  */
 function createGraphContentHourly(ifname, traffic) {
 	const options = {
+		title: {
+			display: true,
+			text: ifname,
+		},
 		scales: {
 			xAxes: [{
 				stacked: stackGraphs,
