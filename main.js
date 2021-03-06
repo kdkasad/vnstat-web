@@ -172,7 +172,7 @@ function createGraphContentHourly(ifname, traffic) {
 	for (const hour of traffic.hour) {
 		/* add a label for the day */
 		const date = new Date(hour.date.year, hour.date.month, hour.date.day, hour.time.hour);
-		data.labels.push(date.toLocaleString());
+		data.labels.push(`${date.getHours()}:00`);
 
 		/* add the rx/tx data for the day */
 		const rx = roundTo(hour.rx / (1024 ** 3), 3);
