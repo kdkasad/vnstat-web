@@ -18,14 +18,14 @@
 	<body>
 		<header>
 			<form method=GET onchange="this.submit();">
-				<label for=stack>Stack graphs</label>
+				<label for=stack-checkbox>Stack graphs</label>
 				<input type=checkbox name=stack id=stack-checkbox />
-				<label for=ts>Time scale:</label>
+				<label for=ts-select>Time scale:</label>
 				<select name=ts id="ts-select">
 					<option value=d id=ts-d>Daily</option>
 					<option value=h id=ts-h>Hourly</option>
 				</select>
-				<label for=nr>Time slots:</label>
+				<label for=nr-box>Time slots:</label>
 				<input type=number name=nr id=nr-box min=1 max=50 />
 			</form>
 		</header>
