@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<title>vnstat web interface - admin.kasad.com</title>
+
+		<meta name="author" content="Kian Kasad">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<script src="Chart.min.js" integrity="sha256-t9UJPrESBeG2ojKTIcFLPGF7nHi2vEc7f5A2KpH/UBU="></script>
+		<script defer src="main.js"></script>
+
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+		<header>
+			<form method=GET onchange="this.submit();">
+				<label for=stack>Stack graphs</label>
+				<input type=checkbox name=stack id=stack-checkbox />
+				<label for=ts>Time scale:</label>
+				<select name=ts id="ts-select">
+					<option value=d id=ts-d>Daily</option>
+					<option value=h id=ts-h>Hourly</option>
+				</select>
+				<label for=nr>Time slots:</label>
+				<input type=number name=nr id=nr-box min=1 max=50 />
+			</form>
+		</header>
+
+		<noscript>
+			<p>JavaScript is required to render the graphs</p>
+		</noscript>
+
+		<div id="graph-grid">
+		</div>
+	</body>
+</html>
