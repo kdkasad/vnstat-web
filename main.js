@@ -235,6 +235,18 @@ function processDataHourly(data) {
 	}
 }
 
+function updateGraphColors() {
+	fgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--fg-color').trim()
+	bgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim()
+	Chart.defaults.global.defaultFontColor = fgcolor;
+	for (const i in Chart.instances) {
+		const c = Chart.instances[i];
+		c.options.scales.yAxes[0].gridLines.color = fgcolor;
+		c.options.scales.xAxes[0].gridLines.color = fgcolor;
+		c.update();
+	}
+}
+
 /* Get '--fg-color' and '--bg-color' custom CSS properties */
 const rootElement = document.querySelector(':root');
 let fgcolor = getComputedStyle(rootElement).getPropertyValue('--fg-color').trim()
@@ -283,17 +295,7 @@ if (usp.get('stack') || usp.has('stack')) {
 }
 
 /* Update graphs when color scheme changes */
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (d) => {
-	fgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--fg-color').trim()
-	bgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim()
-	Chart.defaults.global.defaultFontColor = fgcolor;
-	for (const i in Chart.instances) {
-		const c = Chart.instances[i];
-		c.options.scales.yAxes[0].gridLines.color = fgcolor;
-		c.options.scales.xAxes[0].gridLines.color = fgcolor;
-		c.update();
-	}
-});
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateGraphColors);
 
 /* Fetch JSON data from vnstat and create graphs */
 fetch(`data.json?ts=${timeScale}&nr=${timeSlots}`, {
@@ -306,3 +308,6 @@ fetch(`data.json?ts=${timeScale}&nr=${timeSlots}`, {
 		else if (timeScale === 'd')
 			processDataDaily(data);
 	});
+
+/* Update graph colors when all content has loaded */
+window.addEventListener('load', updateGraphColors);
