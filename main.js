@@ -264,7 +264,6 @@ fetch(`data.json?ts=${timeScale}&nr=${timeSlots}`, {
 })
 	.then(response => response.json())
 	.then(data => {
-		console.log(timeScale);
 		if (timeScale === 'h')
 			processDataHourly(data);
 		else if (timeScale === 'd')
