@@ -1,11 +1,16 @@
 body {
 	display: grid;
 	justify-items: center;
+	margin: 0;
 }
 
 header {
 	width: 100%;
 	text-align: right;
+	height: 4em;
+	padding: 1em;
+	box-shadow: 0 0px 8px 0px darkgray;
+	box-sizing: border-box;
 }
 
 header label {
