@@ -6,12 +6,20 @@ header {
 	width: 100%;
 	height: 4em;
 	padding: 1em;
-	box-shadow: 0 0px 8px 0px darkgray;
 	box-sizing: border-box;
+
+	position: sticky;
+	top: 0;
+	left: 0;
+
+	background-color: #fff;
+	box-shadow: 0 0px 8px 0px darkgray;
+
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-end;
 	align-items: center;
+
 }
 
 header > form > label {
