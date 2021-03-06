@@ -235,8 +235,10 @@ function processDataHourly(data) {
 	}
 }
 
-let fgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--fg-color').trim()
-let bgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim()
+/* Get '--fg-color' and '--bg-color' custom CSS properties */
+const rootElement = document.querySelector(':root');
+let fgcolor = getComputedStyle(rootElement).getPropertyValue('--fg-color').trim()
+let bgcolor = getComputedStyle(rootElement).getPropertyValue('--bg-color').trim()
 
 /* Chart.js global configuration options */
 Chart.defaults.global.elements.rectangle.borderWidth = 2;
