@@ -1,5 +1,8 @@
 /*
  * Round to given number of decimal places
+ *
+ * number: number to round
+ * precision: number of decimals places
  */
 function roundTo(number, precision) {
 	return Math.round(number * (10 ** precision)) / (10 ** precision);
@@ -16,7 +19,7 @@ function createGraphElements(ifname) {
 }
 
 /*
- * Create the graph content using Chart.js
+ * Create the graph content for a daily graph using Chart.js
  *
  * ifname: the name of the interface (e.g. 'eth0' or 'wlp2s0')
  * traffic: the data from the 'traffic' object of the interface
@@ -105,7 +108,7 @@ function createGraphContentDaily(ifname, traffic) {
 }
 
 /*
- * Create the graph content using Chart.js
+ * Create the graph content for an hourly graph using Chart.js
  *
  * ifname: the name of the interface (e.g. 'eth0' or 'wlp2s0')
  * traffic: the data from the 'traffic' object of the interface
@@ -194,7 +197,7 @@ function createGraphContentHourly(ifname, traffic) {
 }
 
 /*
- * Process the JSON data received from vnstat
+ * Process the JSON data received from vnstat for a daily bandwidth graph
  *
  * data: an object containing the parsed JSON data
  */
@@ -217,6 +220,11 @@ function processDataDaily(data) {
 	}
 }
 
+/*
+ * Process the JSON data received from vnstat for an hourly bandwidth graph
+ *
+ * data: an object containing the parsed JSON data
+ */
 function processDataHourly(data) {
 	const ifs = data.interfaces;
 
@@ -235,6 +243,9 @@ function processDataHourly(data) {
 	}
 }
 
+/*
+ * Update colors of graphs' text and grid
+ */
 function updateGraphColors() {
 	fgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--fg-color').trim()
 	bgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim()
