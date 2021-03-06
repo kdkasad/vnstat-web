@@ -235,8 +235,8 @@ function processDataHourly(data) {
 	}
 }
 
-const fgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--fg-color').trim()
-const bgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim()
+let fgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--fg-color').trim()
+let bgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim()
 
 /* Chart.js global configuration options */
 Chart.defaults.global.elements.rectangle.borderWidth = 2;
@@ -279,6 +279,19 @@ if (usp.get('stack') || usp.has('stack')) {
 	stackGraphs = true;
 	document.getElementById('stack-checkbox').checked = true;
 }
+
+/* Update graphs when color scheme changes */
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (d) => {
+	fgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--fg-color').trim()
+	bgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim()
+	Chart.defaults.global.defaultFontColor = fgcolor;
+	for (const i in Chart.instances) {
+		const c = Chart.instances[i];
+		c.options.scales.yAxes[0].gridLines.color = fgcolor;
+		c.options.scales.xAxes[0].gridLines.color = fgcolor;
+		c.update();
+	}
+});
 
 /* Fetch JSON data from vnstat and create graphs */
 fetch(`data.json?ts=${timeScale}&nr=${timeSlots}`, {
