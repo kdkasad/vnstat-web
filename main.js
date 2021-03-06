@@ -91,7 +91,7 @@ function createGraphContentDaily(ifname, traffic) {
 		data.datasets[0].data.push(rx);
 		data.datasets[1].data.push(tx);
 		if (!stackGraphs) {
-			const total = rx + tx;
+			const total = roundTo(rx + tx, 3);
 			data.datasets[2].data.push(total);
 		}
 	}
@@ -180,7 +180,7 @@ function createGraphContentHourly(ifname, traffic) {
 		data.datasets[0].data.push(rx);
 		data.datasets[1].data.push(tx);
 		if (!stackGraphs) {
-			const total = rx + tx;
+			const total = roundTo(rx + tx, 3);
 			data.datasets[2].data.push(total);
 		}
 	}
