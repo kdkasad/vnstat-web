@@ -5,9 +5,6 @@ function roundTo(number, precision) {
 	return Math.round(number * (10 ** precision)) / (10 ** precision);
 }
 
-/* Chart.js global configuration options */
-Chart.defaults.global.elements.rectangle.borderWidth = 2;
-
 /*
  * Create the necessary HTML elements for an interface's traffic graph
  *
@@ -29,9 +26,15 @@ function createGraphContentDaily(ifname, traffic) {
 		scales: {
 			xAxes: [{
 				stacked: stackGraphs,
+				gridLines: {
+					color: fgcolor,
+				},
 			}],
 			yAxes: [{
 				stacked: stackGraphs,
+				gridLines: {
+					color: fgcolor,
+				},
 				ticks: {
 					beginAtZero: true,
 				},
@@ -101,9 +104,15 @@ function createGraphContentHourly(ifname, traffic) {
 		scales: {
 			xAxes: [{
 				stacked: stackGraphs,
+				gridLines: {
+					color: fgcolor,
+				},
 			}],
 			yAxes: [{
 				stacked: stackGraphs,
+				gridLines: {
+					color: fgcolor,
+				},
 				ticks: {
 					beginAtZero: true,
 				},
@@ -203,6 +212,14 @@ function processDataHourly(data) {
 		createGraphContentHourly(iface.name, iface.traffic);
 	}
 }
+
+const fgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--fg-color').trim()
+const bgcolor = window.getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim()
+
+/* Chart.js global configuration options */
+Chart.defaults.global.elements.rectangle.borderWidth = 2;
+Chart.platform.disableCSSInjection = true;
+Chart.defaults.global.defaultFontColor = fgcolor;
 
 const usp = new URLSearchParams(window.location.search);
 

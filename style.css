@@ -1,5 +1,9 @@
+@import url('/global/style/colors.css');
+
 body {
 	margin: 0;
+	background-color: var(--bg-color);
+	color: var(--fg-color);
 }
 
 header {
@@ -12,7 +16,7 @@ header {
 	top: 0;
 	left: 0;
 
-	background-color: #fff;
+	background-color: var(--bg-color);
 	box-shadow: 0 0px 8px 0px darkgray;
 
 	display: flex;
@@ -41,4 +45,9 @@ header > form > label {
 	text-align: center;
 	margin-top: 1em;
 	margin-bottom: 1em;
+
+@media (prefers-color-scheme: dark) {
+	header {
+		box-shadow: 0 0px 8px 0px #040404;
+	}
 }
