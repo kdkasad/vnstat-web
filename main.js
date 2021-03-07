@@ -267,6 +267,7 @@ let bgcolor = getComputedStyle(rootElement).getPropertyValue('--bg-color').trim(
 Chart.defaults.global.elements.rectangle.borderWidth = 2;
 Chart.platform.disableCSSInjection = true;
 Chart.defaults.global.defaultFontColor = fgcolor;
+Chart.defaults.global.defaultFontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
 
 const usp = new URLSearchParams(window.location.search);
 
