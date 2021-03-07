@@ -323,3 +323,16 @@ fetch(`data.json?ts=${timeScale}&nr=${timeSlots}`, {
 
 /* Update graph colors when all content has loaded */
 window.addEventListener('load', updateGraphColors);
+
+/* Style charts before and after printing page */
+window.addEventListener('beforeprint', () => {
+	Chart.defaults.global.defaultFontColor = 'black';
+	for (const i in Chart.instances) {
+		const c = Chart.instances[i];
+		c.options.scales.yAxes[0].gridLines.color = 'black';
+		c.options.scales.xAxes[0].gridLines.color = 'black';
+		c.update();
+		c.resize()
+	}
+});
+window.addEventListener('afterprint', updateGraphColors);
