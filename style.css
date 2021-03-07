@@ -44,10 +44,13 @@ header > form > label {
 .canvas-container {
 	min-width: 600px;
 	text-align: center;
-	margin-top: 1em;
-	margin-bottom: 1em;
 	flex: 1 0 45%;
 	padding: 25px;
+	box-sizing: border-box;
+}
+
+canvas {
+	max-width: 100%;
 }
 
 @media (prefers-color-scheme: dark) {
