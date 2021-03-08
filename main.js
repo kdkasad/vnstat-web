@@ -68,8 +68,8 @@ function createGraphContentDaily(ifname, traffic) {
 			{
 				label: 'Tx',
 				data: [],
-				backgroundColor: '#58D68D',
-				borderColor: '#2ECC71',
+				backgroundColor: '#F7DC6F',
+				borderColor: '#F4D03F',
 			},
 		],
 	};
@@ -77,8 +77,8 @@ function createGraphContentDaily(ifname, traffic) {
 		data.datasets.push({
 				label: 'Total',
 				data: [],
-				backgroundColor: '#F7DC6F',
-				borderColor: '#F4D03F',
+				backgroundColor: '#58D68D',
+				borderColor: '#2ECC71',
 			});
 	}
 
