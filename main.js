@@ -40,15 +40,9 @@ function createGraphContentDaily(ifname, traffic) {
 		scales: {
 			xAxes: [{
 				stacked: stackGraphs,
-				gridLines: {
-					color: fgcolor,
-				},
 			}],
 			yAxes: [{
 				stacked: stackGraphs,
-				gridLines: {
-					color: fgcolor,
-				},
 				ticks: {
 					beginAtZero: true,
 				},
@@ -129,15 +123,9 @@ function createGraphContentHourly(ifname, traffic) {
 		scales: {
 			xAxes: [{
 				stacked: stackGraphs,
-				gridLines: {
-					color: fgcolor,
-				},
 			}],
 			yAxes: [{
 				stacked: stackGraphs,
-				gridLines: {
-					color: fgcolor,
-				},
 				ticks: {
 					beginAtZero: true,
 				},
@@ -266,8 +254,9 @@ let bgcolor = getComputedStyle(rootElement).getPropertyValue('--bg-color').trim(
 /* Chart.js global configuration options */
 Chart.defaults.global.elements.rectangle.borderWidth = 2;
 Chart.platform.disableCSSInjection = true;
-Chart.defaults.global.defaultFontColor = fgcolor;
 Chart.defaults.global.defaultFontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
+Chart.defaults.global.defaultFontColor = fgcolor;
+Chart.defaults.scale.gridLines.color = fgcolor;
 
 const usp = new URLSearchParams(window.location.search);
 
