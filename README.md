@@ -17,9 +17,11 @@ future. Use the latest tag if you want to deploy this software.
 
 vnstat must be configured first. To set up the web interface, simply place the
 following files in a directory served by your HTTP server:
+
 * `index.html`
 * `style.css`
 * `main.js`
+* `Chart.min.js`
 
 ### `data.json`
 
