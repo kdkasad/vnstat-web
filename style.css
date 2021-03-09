@@ -1,4 +1,14 @@
-@import url('/global/style/colors.css');
+:root {
+	--bg-color: #f5f5f5;
+	--fg-color: #000000e0;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-color: #1d1e20;
+		--fg-color: #ffffffd6;
+	}
+}
 
 body {
 	margin: 0;
