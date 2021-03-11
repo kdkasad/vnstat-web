@@ -15,41 +15,27 @@ future. Use the latest tag if you want to deploy this software.
 
 ## Usage
 
-vnstat must be configured first. To set up the web interface, simply place the
-following files in a directory served by your HTTP server:
+vnstat version 2.x must be configured first. To set up the web interface,
+simply place the following files in a directory served by your HTTP server:
 
 * `index.html`
 * `style.css`
 * `main.js`
 * `Chart.min.js`
+* `data.php`
 
-### `data.json`
+> **Note:** `data.php` must be run by a PHP interpreter. Simply serving the
+> static content will not work.
 
-After that, the `data.json` endpoint must be configured to serve JSON output
-from vnstat. You can use the provided `getdata.sh` CGI script. Information on
-how to call the script is provided in a comment in the script.
-
-#### NGINX
-
-If you use [NGINX](https://nginx.org/), the following location block will work
-using FastCGI to serve the `data.json` endpoint using the `getdata.sh` script.
-
-```nginx
-location = /<vnstat-web directory>/data.json {
-		expires 10m;
-		include		fastcgi_params;
-		fastcgi_param	SCRIPT_FILENAME /www/admin.kasad.com/vnstat/getdata.sh;
-		fastcgi_param	PATH_INFO       $uri;
-		fastcgi_param   TIME_SCALE      $arg_ts;
-		fastcgi_param   TIME_LIMIT      $arg_nr;
-		fastcgi_pass	unix:/run/fcgiwrap.socket;
-	}
-}
-```
+The `data.php` script will automatically detect which interfaces are available
+from vnstat's output.
 
 ## Configuration & customization
 
 Currently, no central configuration/customization location is provided. To
-customize the page structure, edit the `index.html` file. To customize the
-behavior of the graphs and data processing, edit the `main.js` file, which
-includes comments to enhance readability.
+customize the page structure, edit the `index.html` and `style.css` files. To
+customize the behavior of the graphs and data processing, edit the `main.js`
+file, which includes comments to enhance readability.
+
+There shouldn't be much need to edit the `data.php` backend, but that's where
+the backend code is located if it needs to be changed.
