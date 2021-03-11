@@ -19,22 +19,38 @@
 		<header>
 			<h2>Bandwidth usage report</h2>
 			<form method=GET onchange="this.submit();">
-				<label for=stack-checkbox>Stack graphs</label>
-				<input type=checkbox name=stack id=stack-checkbox />
-				<label for=ts-select>Time scale:</label>
-				<select name=ts id="ts-select">
-					<option value=d id=ts-d>Daily</option>
-					<option value=h id=ts-h>Hourly</option>
-				</select>
-				<label for=nr-box>Time slots:</label>
-				<input type=number name=nr id=nr-box min=1 max=50 />
+				<div>
+					<label for="ifname-select">Interface:</label>
+					<select name=ifname id="ifname-select">
+					</select>
+				</div>
+				<div>
+					<label for=stack-checkbox>Stack graphs</label>
+					<input type=checkbox name=stack id=stack-checkbox />
+				</div>
+				<div>
+					<label for=ts-select>Time scale:</label>
+					<select name=ts id="ts-select">
+						<option value=hour id=ts-h>Hourly</option>
+						<option value=day id=ts-d>Daily</option>
+						<option value=month id=ts-m>Monthly</option>
+						<option value=year id=ts-y>Yearly</option>
+						<option value=top id=ts-t>Top (daily)</option>
+					</select>
+				</div>
+				<div>
+					<label for=nr-box>Time slots:</label>
+					<input type=number name=nr id=nr-box min=1 max=50 />
+				</div>
 			</form>
 		</header>
 
-		<div id="graph-grid">
-			<noscript>
-				<p>JavaScript is required to render the graphs</p>
-			</noscript>
+		<noscript>
+			<p>JavaScript is required to render the graphs</p>
+		</noscript>
+		<div class="canvas-container">
+			<canvas id="graph-canvas">Your browser does not support canvas elements.</canvas>
 		</div>
+
 	</body>
 </html>

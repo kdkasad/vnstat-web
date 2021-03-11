@@ -4,231 +4,26 @@
  * number: number to round
  * precision: number of decimals places
  */
-function roundTo(number, precision) {
+Math.roundTo = function(number, precision) {
 	return Math.round(number * (10 ** precision)) / (10 ** precision);
 }
 
-/*
- * Create the necessary HTML elements for an interface's traffic graph
- *
- * ifname: the name of the interface (e.g. 'eth0' or 'wlp2s0')
- */
-function createGraphElements(ifname) {
-	document.getElementById('graph-grid').insertAdjacentHTML( 'beforeend',
-		`<div class="canvas-container"><canvas id="graph-${ifname}">Your browser does not support canvas elements.</canvas></div>`);
-}
+Date.prototype.getDayOfWeekName = function() {
+	return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][this.getDay()];
+};
 
-/*
- * Create the graph content for a daily graph using Chart.js
- *
- * ifname: the name of the interface (e.g. 'eth0' or 'wlp2s0')
- * traffic: the data from the 'traffic' object of the interface
- */
-function createGraphContentDaily(ifname, traffic) {
-	const options = {
-		title: {
-			display: true,
-			text: ifname,
-		},
-		tooltips: {
-			callbacks: {
-				label: (tti, data) => {
-					return data.datasets[tti.datasetIndex].label + ": " + data.datasets[tti.datasetIndex].data[tti.index] + ' GiB';
-				}
-			}
-		},
-		scales: {
-			xAxes: [{
-				stacked: stackGraphs,
-			}],
-			yAxes: [{
-				stacked: stackGraphs,
-				ticks: {
-					beginAtZero: true,
-				},
-			}],
-		},
-	};
-
-	const data = {
-		labels: [],
-		datasets: [
-			{
-				label: 'Rx',
-				data: [],
-				backgroundColor: '#5DADE2',
-				borderColor: '#3498DB',
-			},
-			{
-				label: 'Tx',
-				data: [],
-				backgroundColor: '#F7DC6F',
-				borderColor: '#F4D03F',
-			},
-		],
-	};
-	if (!stackGraphs) {
-		data.datasets.push({
-				label: 'Total',
-				data: [],
-				backgroundColor: '#58D68D',
-				borderColor: '#2ECC71',
-			});
-	}
-
-	/* add each day's data to the graph */
-	for (const day of traffic.day) {
-		/* add a label for the day */
-		const date = new Date(day.date.year, day.date.month, day.date.day);
-		data.labels.push(date.toLocaleDateString());
-
-		/* add the rx/tx data for the day */
-		const rx = roundTo(day.rx / (1024 ** 3), 3);
-		const tx = roundTo(day.tx / (1024 ** 3), 3);
-		data.datasets[0].data.push(rx);
-		data.datasets[1].data.push(tx);
-		if (!stackGraphs) {
-			const total = roundTo(rx + tx, 3);
-			data.datasets[2].data.push(total);
+Date.prototype.toSpecialFormattedString = function(type) {
+		switch (type) {
+			case 'hour':
+				return `${this.getFullYear()}-${(this.getMonth()+1).toString().padStart(2, '0')}-${this.getDate().toString().padStart(2, '0')} ${this.getHours().toString().padStart(2, '0')}:00`;
+			case 'day':
+			case 'top':
+				return `${this.getDayOfWeekName().substring(0, 3)}, ${this.getFullYear()}-${(this.getMonth()+1).toString().padStart(2, '0')}-${this.getDate().toString().padStart(2, '0')}`;
+			case 'month':
+				return `${this.getFullYear()}-${(this.getMonth()+1).toString().padStart(2, '0')}`;
+			case 'year':
+				return `${this.getFullYear()}`;
 		}
-	}
-
-	const ctx = document.getElementById(`graph-${ifname}`);
-	const graph = new Chart(ctx, {
-		type: 'bar',
-		data: data,
-		options: options,
-	});
-}
-
-/*
- * Create the graph content for an hourly graph using Chart.js
- *
- * ifname: the name of the interface (e.g. 'eth0' or 'wlp2s0')
- * traffic: the data from the 'traffic' object of the interface
- */
-function createGraphContentHourly(ifname, traffic) {
-	const options = {
-		title: {
-			display: true,
-			text: ifname,
-		},
-		tooltips: {
-			callbacks: {
-				label: (tti, data) => {
-					return data.datasets[tti.datasetIndex].label + ": " + data.datasets[tti.datasetIndex].data[tti.index] + ' GiB';
-				}
-			}
-		},
-		scales: {
-			xAxes: [{
-				stacked: stackGraphs,
-			}],
-			yAxes: [{
-				stacked: stackGraphs,
-				ticks: {
-					beginAtZero: true,
-				},
-			}],
-		},
-	};
-
-	const data = {
-		labels: [],
-		datasets: [
-			{
-				label: 'Rx',
-				data: [],
-				backgroundColor: '#5DADE2',
-				borderColor: '#3498DB',
-			},
-			{
-				label: 'Tx',
-				data: [],
-				backgroundColor: '#58D68D',
-				borderColor: '#2ECC71',
-			},
-		],
-	};
-	if (!stackGraphs) {
-		data.datasets.push({
-				label: 'Total',
-				data: [],
-				backgroundColor: '#F7DC6F',
-				borderColor: '#F4D03F',
-			});
-	}
-
-	/* add each day's data to the graph */
-	for (const hour of traffic.hour) {
-		/* add a label for the day */
-		const date = new Date(hour.date.year, hour.date.month, hour.date.day, hour.time.hour);
-		data.labels.push(`${date.getHours()}:00`);
-
-		/* add the rx/tx data for the day */
-		const rx = roundTo(hour.rx / (1024 ** 3), 3);
-		const tx = roundTo(hour.tx / (1024 ** 3), 3);
-		data.datasets[0].data.push(rx);
-		data.datasets[1].data.push(tx);
-		if (!stackGraphs) {
-			const total = roundTo(rx + tx, 3);
-			data.datasets[2].data.push(total);
-		}
-	}
-
-	const ctx = document.getElementById(`graph-${ifname}`);
-	const graph = new Chart(ctx, {
-		type: 'bar',
-		data: data,
-		options: options,
-	});
-}
-
-/*
- * Process the JSON data received from vnstat for a daily bandwidth graph
- *
- * data: an object containing the parsed JSON data
- */
-function processDataDaily(data) {
-	const ifs = data.interfaces;
-
-	for (let i = 0; i < ifs.length; i++) {
-		/* If there's no data for this interface, remove it from the list */
-		if (ifs[i].traffic.day.length <= 0)
-			ifs.splice(i--, 1);
-	}
-
-	/* add a canvas for each interface */
-	for (const iface of ifs)
-		createGraphElements(iface.name);
-
-	/* create a graph for each interface */
-	for (const iface of ifs) {
-		createGraphContentDaily(iface.name, iface.traffic);
-	}
-}
-
-/*
- * Process the JSON data received from vnstat for an hourly bandwidth graph
- *
- * data: an object containing the parsed JSON data
- */
-function processDataHourly(data) {
-	const ifs = data.interfaces;
-
-	for (let i = 0; i < ifs.length; i++) {
-		if (ifs[i].traffic.hour.length <= 0)
-			ifs.splice(i--, 1);
-	}
-
-	/* add a canvas for each interface */
-	for (const iface of ifs)
-		createGraphElements(iface.name);
-
-	/* create a graph for each interface */
-	for (const iface of ifs) {
-		createGraphContentHourly(iface.name, iface.traffic);
-	}
 }
 
 /*
@@ -246,6 +41,98 @@ function updateGraphColors() {
 	}
 }
 
+function createGraphContent(ifdata) {
+	const options = {
+		title: {
+			display: true,
+			text: ifname,
+		},
+		tooltips: {
+			callbacks: {
+				label: (tti, data) => {
+					return data.datasets[tti.datasetIndex].label + ": " + data.datasets[tti.datasetIndex].data[tti.index] + ' GiB';
+				}
+			}
+		},
+		scales: {
+			xAxes: [{
+				stacked: stackGraphs,
+			}],
+			yAxes: [{
+				stacked: stackGraphs,
+				ticks: {
+					beginAtZero: true,
+				},
+			}],
+		},
+	};
+	const data = {
+		labels: [],
+		datasets: [
+			{
+				label: 'Rx',
+				data: [],
+				backgroundColor: '#5DADE2',
+				borderColor: '#3498DB',
+			},
+			{
+				label: 'Tx',
+				data: [],
+				backgroundColor: '#F7DC6F',
+				borderColor: '#F4D03F',
+			},
+		],
+	};
+	if (!stackGraphs) {
+		data.datasets.push({
+			label: 'Total',
+			data: [],
+			backgroundColor: '#58D68D',
+			borderColor: '#2ECC71',
+		});
+	}
+
+	for (const entry of ifdata) {
+		const date = new Date(entry.time * 1000);
+		data.labels.push(date.toSpecialFormattedString(timeScale));
+		data.datasets[0].data.push(Math.roundTo(entry.rx / (1024 ** 3), 3));
+		data.datasets[1].data.push(Math.roundTo(entry.tx / (1024 ** 3), 3));
+		if (!stackGraphs)
+			data.datasets[2].data.push(Math.roundTo((entry.rx + entry.tx) / (1024 ** 3), 3));
+	}
+
+	Chart.Bar('graph-canvas', { data: data, options: options });
+};
+
+/*
+ * Process data received from the data.php backend
+ */
+function processData(data) {
+	createGraphContent(data);
+}
+
+function processInterfaceList(data) {
+	for (const ifname of data) {
+		document.getElementById('ifname-select').insertAdjacentHTML('beforeend',
+			`<option id="if-${ifname}" value="${ifname}">${ifname}</option>`
+		);
+	}
+
+	if (usp.get('ifname')) {
+		ifname = usp.get('ifname');
+		for (const option of document.getElementById('ifname-select').children)
+			option.selected = false;
+		document.getElementById(`if-${ifname}`).selected = true;
+	}
+
+	/* Fetch JSON data from vnstat and create graphs */
+	fetch(`data.php?requesttype=data&ifname=${ifname}&timescale=${timeScale}&period=${timeSlots}`, {
+		credentials: 'same-origin',
+	})
+		.then(response => response.json())
+		.then(data => processData(data));
+}
+
 /* Get '--fg-color' and '--bg-color' custom CSS properties */
 const rootElement = document.querySelector(':root');
 let fgcolor = getComputedStyle(rootElement).getPropertyValue('--fg-color').trim()
@@ -260,28 +147,58 @@ Chart.defaults.scale.gridLines.color = fgcolor;
 
 const usp = new URLSearchParams(window.location.search);
 
+let ifname;
+
 /* Set 'timeSlots' based on URL query parameter 'nr' */
 let timeSlots;
 if (usp.get('nr'))
 	timeSlots = usp.get('nr');
+else
+	timeSlots = 8;
 
 /* Set 'timeScale' based on URL query parameter 'ts' */
 let timeScale;
 switch (usp.get('ts')) {
-	case 'h':
-		timeScale = 'h';
+	case 'hour':
+		timeScale = 'hour';
 		document.getElementById('ts-d').selected = false;
 		document.getElementById('ts-h').selected = true;
-		if (!timeSlots)
-			timeSlots = 12;
+		document.getElementById('ts-m').selected = false;
+		document.getElementById('ts-t').selected = false;
+		document.getElementById('ts-y').selected = false;
 		break;
-	case 'd':
+	case 'month':
+		timeScale = 'month';
+		document.getElementById('ts-d').selected = false;
+		document.getElementById('ts-h').selected = false;
+		document.getElementById('ts-m').selected = true;
+		document.getElementById('ts-t').selected = false;
+		document.getElementById('ts-y').selected = false;
+		break;
+	case 'year':
+		timeScale = 'year';
+		document.getElementById('ts-d').selected = false;
+		document.getElementById('ts-h').selected = false;
+		document.getElementById('ts-m').selected = false;
+		document.getElementById('ts-t').selected = false;
+		document.getElementById('ts-y').selected = true;
+		break;
+	case 'top':
+		timeScale = 'top';
+		document.getElementById('ts-d').selected = false;
+		document.getElementById('ts-h').selected = false;
+		document.getElementById('ts-m').selected = false;
+		document.getElementById('ts-t').selected = true;
+		document.getElementById('ts-y').selected = false;
+		break;
+	case 'day':
 	default:
-		timeScale = 'd';
+		timeScale = 'day';
 		document.getElementById('ts-d').selected = true;
 		document.getElementById('ts-h').selected = false;
-		if (!timeSlots)
-			timeSlots = 7;
+		document.getElementById('ts-m').selected = false;
+		document.getElementById('ts-t').selected = false;
+		document.getElementById('ts-y').selected = false;
 		break;
 }
 
@@ -298,17 +215,12 @@ if (usp.get('stack') || usp.has('stack')) {
 /* Update graphs when color scheme changes */
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateGraphColors);
 
-/* Fetch JSON data from vnstat and create graphs */
-fetch(`data.json?ts=${timeScale}&nr=${timeSlots}`, {
+/* Fetch list of available interfaces */
+fetch('data.php?requesttype=iflist', {
 	credentials: 'same-origin',
 })
 	.then(response => response.json())
-	.then(data => {
-		if (timeScale === 'h')
-			processDataHourly(data);
-		else if (timeScale === 'd')
-			processDataDaily(data);
-	});
+	.then(data => processInterfaceList(data));
 
 /* Update graph colors when all content has loaded */
 window.addEventListener('load', updateGraphColors);
