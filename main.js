@@ -111,7 +111,20 @@ function processData(data) {
 	createGraphContent(data);
 }
 
+/*
+ * Process list of interfaces received from vnstat
+ */
 function processInterfaceList(data) {
+	/* if no interfaces available, add an error message to the page and return */
+	if (data.length <= 0) {
+		document.body.insertAdjacentHTML('beforeend',
+			'<h3 id="error-msg">No interfaces available</h3>');
+		for (element of document.getElementsByClassName('canvas-container'))
+			element.style.display = 'none';
+		return;
+	}
+
+	/* add each interface to the form options */
 	for (const ifname of data) {
 		document.getElementById('ifname-select').insertAdjacentHTML('beforeend',
 			`<option id="if-${ifname}" value="${ifname}">${ifname}</option>`
