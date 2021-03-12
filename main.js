@@ -131,8 +131,16 @@ function processInterfaceList(data) {
 		);
 	}
 
+	/* if user has specified an interface, select that one in the form */
 	if (usp.get('ifname')) {
 		ifname = usp.get('ifname');
+		if (data.indexOf(ifname) === -1) {
+			document.body.insertAdjacentHTML('beforeend',
+				'<h3 id="error-msg">Selected interface not available</h3>');
+			for (element of document.getElementsByClassName('canvas-container'))
+				element.style.display = 'none';
+			return;
+		}
 		for (const option of document.getElementById('ifname-select').children)
 			option.selected = false;
 		document.getElementById(`if-${ifname}`).selected = true;
