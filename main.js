@@ -141,10 +141,13 @@ function processInterfaceList(data) {
 				element.style.display = 'none';
 			return;
 		}
-		for (const option of document.getElementById('ifname-select').children)
-			option.selected = false;
-		document.getElementById(`if-${ifname}`).selected = true;
+	} else {
+		/* if no interface specified, choose the first one */
+		ifname = data[0];
 	}
+	for (const option of document.getElementById('ifname-select').children)
+		option.selected = false;
+	document.getElementById(`if-${ifname}`).selected = true;
 
 	/* Fetch JSON data from vnstat and create graphs */
 	fetch(`data.php?requesttype=data&ifname=${ifname}&timescale=${timeScale}&period=${timeSlots}`, {
